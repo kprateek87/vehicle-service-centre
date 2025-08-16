@@ -1,0 +1,56 @@
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Output
+dist/
+build/
+.cache/
+.next/
+out/
+
+# Turborepo
+.turbo/
+turbo.json.local
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+apps/*/.env
+apps/*/.env.local
+
+# Prisma
+prisma/migrations/*-dev/
+*.db-journal
+
+# Logs
+logs
+*.log
+*.pid
+*.seed
+*.pid.lock
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Docker
+docker-compose.override.yml
+docker-data/
+postgres_data/
+*.tar
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+
+# Coverage
+coverage/
+*.lcov
