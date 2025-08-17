@@ -11,8 +11,8 @@ export class UserService {
         const users = await this.prisma.user.findMany();
         return users
     }
-    async getUser(id: number) {
-        const user = await this.prisma.user.findUnique({ where: { id: id.toString() } });
+    async getUser(username: string) {
+        const user = await this.prisma.user.findUnique({ where: { username: username } });
         if (!user) throw new Error("User Not Found")
         return user;
     }
@@ -21,6 +21,7 @@ export class UserService {
             data: {
                 name: user.name,
                 email: user.email,
+                username: user.username,
                 password: user.password,
                 role: user.role
             }
@@ -33,23 +34,27 @@ export class UserService {
                     name: 'Admin User',
                     email: 'admin@vsc.com',
                     password: 'hashedpassword1',
+                    username: 'admin',
                     role: Role.ADMIN,
                 },
                 {
                     name: 'John Mechanic',
                     email: 'mechanic@vsc.com',
+                    username: 'johnmechanic',
                     password: 'hashedpassword2',
                     role: Role.MECHANIC,
                 },
                 {
                     name: 'Reception Jane',
                     email: 'reception@vsc.com',
+                    username: 'janereception',
                     password: 'hashedpassword3',
                     role: Role.STAFF,
                 },
                 {
                     name: 'Customer Mark',
                     email: 'customer@vsc.com',
+                    username: 'mark1',
                     password: 'hashedpassword4',
                     role: Role.STAFF,
                 },

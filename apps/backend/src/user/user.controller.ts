@@ -22,9 +22,9 @@ export class UserController {
 
 
     @Get(':id')
-    getUser(@Param('id', ParseIntPipe) id: number) {
+    getUser(@Param('username') username: string) {
         try {
-            return this.userService.getUser(id)
+            return this.userService.getUser(username)
         }
         catch (e) {
             throw new NotFoundException(e.message)
