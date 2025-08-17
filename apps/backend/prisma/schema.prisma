@@ -1,0 +1,128 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(cuid())
+  name        String
+  username    String   @unique
+  email       String   @unique
+  password    String   // hashed password
+  role        Role     @default(STAFF)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  services    Service[]
+}
+
+enum Role {
+  ADMIN
+  STAFF
+  MECHANIC
+  CUSTOMER
+}
+model Customer {
+  id        String    @id @default(cuid())
+  name      String
+  phone     String    @unique
+  email     String?   @unique
+  address   String?
+  createdAt DateTime  @default(now())
+
+  vehicles  Vehicle[]
+  bookings  Booking[]
+}
+model Vehicle {
+  id           String    @id @default(cuid())
+  licensePlate String    @unique
+  brand        String
+  model        String
+  year         Int?
+  vin          String?   @unique
+  customerId   String
+  customer     Customer  @relation(fields: [customerId], references: [id])
+
+  bookings     Booking[]
+  services     Service[]
+}
+model Booking {
+  id          String    @id @default(cuid())
+  date        DateTime
+  status      BookingStatus @default(PENDING)
+  notes       String?
+
+  customerId  String
+  vehicleId   String
+  customer    Customer @relation(fields: [customerId], references: [id])
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+
+  services    Service[]
+
+  Invoice Invoice[]
+}
+model Service {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  cost        Float
+  duration    Int      // minutes
+  status      ServiceStatus @default(PENDING)
+
+  bookingId   String
+  userId      String?
+  vehicleId   String
+
+  booking     Booking  @relation(fields: [bookingId], references: [id])
+  user        User?    @relation(fields: [userId], references: [id])
+  vehicle     Vehicle  @relation(fields: [vehicleId], references: [id])
+}
+model Invoice {
+  id          String    @id @default(cuid())
+  bookingId   String
+  totalAmount Float
+  status      InvoiceStatus @default(UNPAID)
+  issuedAt    DateTime  @default(now())
+
+  booking     Booking   @relation(fields: [bookingId], references: [id])
+  payments    Payment[]
+}
+model Payment {
+  id          String    @id @default(cuid())
+  invoiceId   String
+  amount      Float
+  method      PaymentMethod
+  paidAt      DateTime  @default(now())
+
+  invoice     Invoice   @relation(fields: [invoiceId], references: [id])
+}
+
+enum PaymentMethod {
+  CASH
+  CARD
+  UPI
+  NETBANKING
+}
+enum BookingStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+}
+
+enum ServiceStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum InvoiceStatus {
+  UNPAID
+  PAID
+  PARTIALLY_PAID
+}
