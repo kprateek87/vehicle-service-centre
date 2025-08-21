@@ -21,7 +21,7 @@ export class UserController {
     }
 
 
-    @Get(':id')
+    @Get(':username')
     getUser(@Param('username') username: string) {
         try {
             return this.userService.getUser(username)
