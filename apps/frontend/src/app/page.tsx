@@ -1,15 +1,18 @@
 import { getUsers } from "@/api/users";
 
 export default async function Home() {
-  const users = await getUsers()
-  console.log(users);
-  
+  // const users = await getUsers()
+  // console.log(users);
+
   return (
-   <main className="p-6">
-      <h1 className="text-3xl font-bold">Vehicle Service Centre</h1>
-      <p className="mt-2 text-gray-600">
-        Welcome to your dashboard. Choose an option from the sidebar.
-      </p>
+    <main className="p-5">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <div className="grid grid-cols-2 grid-rows-2 gap-4">
+        <div>01</div>
+        <div>09</div>
+        <div>02</div>
+        <div>08</div>
+      </div>
     </main>
   );
 }
